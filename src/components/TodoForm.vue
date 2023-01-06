@@ -1,5 +1,5 @@
 <template>
-  <form class="w-full grid grid-cols-4">
+  <form @submit.prevent="$emit('response', message)" class="w-full grid grid-cols-4">
     <input
       v-model="message"
       type="text"
@@ -22,5 +22,6 @@
 import { ref } from 'vue';
 
 const message = ref('')
+
 const emit = defineEmits(['response'])
 </script>

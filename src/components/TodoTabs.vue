@@ -1,6 +1,5 @@
 <template>
   <TodoForm @response="(msg) => message = msg"/>
-  {{ message }}
   <TabGroup>
     <TabList class="flex space-x-1 rounded-xl p-2 bg-gray-400">
       <Tab
@@ -34,7 +33,7 @@
             class="relative rounded-xl p-3 bg-gray-500 text-purple-400 w-full"
           >
             <h3 class="text-sm font-medium leading-5">
-              {{ post.title }}
+              {{ post.title ? post.title : 'Sem Tarefas'}}
             </h3>
 
             <ul
@@ -58,7 +57,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import TodoForm from "./TodoForm.vue";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
@@ -69,14 +68,14 @@ let todoList = ref(
     Tarefas: [
       {
         id: 1,
-        title: "Does drinking coffee make you smarter?",
-        date: "5h ago",
+        title: "Não há Tarefas !",
+        date: "",
       },
-      {
-        id: 2,
-        title: "So you've bought coffee... now what?",
-        date: "2h ago",
-      }
+      // {
+      //   id: 2,
+      //   title: "So you've bought coffee... now what?",
+      //   date: "2h ago",
+      // }
     ],
     Concluidas: [
       {
@@ -92,5 +91,17 @@ let todoList = ref(
     ],
   }
 );
+
+watchEffect(() => {
+  if (message.value){
+    todoList.value.Tarefas.push({
+      id: 3,
+      title: message.value,
+      date: new Date().toDateString(),
+    })
+    console.log(todoList.value.Tarefas, message.value)
+  }
+});
+
 
 </script>
