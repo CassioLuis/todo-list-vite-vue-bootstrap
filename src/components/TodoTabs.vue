@@ -1,5 +1,5 @@
 <template>
-  <TodoForm @response="(msg) => message = msg"/>
+  <TodoForm @response="addTask" />
   <TabGroup>
     <TabList class="flex space-x-1 rounded-xl p-2 bg-gray-400">
       <Tab
@@ -12,7 +12,9 @@
           :class="[
             'w-full rounded-lg py-2.5 text-base font-medium leading-5',
             'focus:outline-none',
-            selected ? 'bg-gray-500 shadow text-purple-300' : 'text-purple-600 hover:bg-white/[0.40] hover:text-white',
+            selected
+              ? 'bg-gray-500 shadow text-purple-300'
+              : 'text-purple-600 hover:bg-white/[0.40] hover:text-white',
           ]"
         >
           {{ category }}
@@ -33,7 +35,7 @@
             class="relative rounded-xl p-3 bg-gray-500 text-purple-400 w-full"
           >
             <h3 class="text-sm font-medium leading-5">
-              {{ post.title ? post.title : 'Sem Tarefas'}}
+              {{ post.title ? post.title : "Sem Tarefas" }}
             </h3>
 
             <ul
@@ -57,51 +59,86 @@
 </template>
 
 <script setup>
-import { ref, watchEffect } from "vue";
+import { onBeforeMount, onMounted, ref, watchEffect } from "vue";
 import TodoForm from "./TodoForm.vue";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
-let message = ref('');
+let message = ref("");
 
-let todoList = ref(
-  {
-    Tarefas: [
-      {
-        id: 1,
-        title: "Não há Tarefas !",
-        date: "",
-      },
-      // {
-      //   id: 2,
-      //   title: "So you've bought coffee... now what?",
-      //   date: "2h ago",
-      // }
-    ],
-    Concluidas: [
-      {
-        id: 1,
-        title: "Is tech making coffee better or worse?",
-        date: "Jan 7",
-      },
-      {
-        id: 2,
-        title: "The most innovative things happening in coffee",
-        date: "Mar 19",
-      },
-    ],
-  }
-);
-
-watchEffect(() => {
-  if (message.value){
-    todoList.value.Tarefas.push({
-      id: 3,
-      title: message.value,
-      date: new Date().toDateString(),
-    })
-    console.log(todoList.value.Tarefas, message.value)
-  }
+let todoList = ref({
+  Tarefas: [
+    // {
+    //   id: 1,
+    //   title: "Não há Tarefas !",
+    //   date: "",
+    // },
+    // {
+    //   id: 2,
+    //   title: "So you've bought coffee... now what?",
+    //   date: "2h ago",
+    // }
+  ],
+  Concluidas: [
+    {
+      id: 1,
+      title: "Is tech making coffee better or worse?",
+      date: "Jan 7",
+    },
+    {
+      id: 2,
+      title: "The most innovative things happening in coffee",
+      date: "Mar 19",
+    },
+  ],
 });
 
+onBeforeMount(() => {
+  // if (todoList.value.Tarefas) {
+  todoList.value.Tarefas = [
+    {
+      id: 1,
+      title: "Não há Tarefas !",
+      date: "",
+    },
+  ];
+  // }
+  console.log(todoList.value.Tarefas, "onBeforeMount");
+});
 
+// onMounted(() => {
+//   setTimeout(() => {
+//     todoList.value.Tarefas = [];
+//     console.log(todoList.value.Tarefas, "onMounted");
+//   }, 1000);
+// });
+
+const addTask = (response) => {
+  if (!response) {
+    return
+  }
+  todoList.value.Tarefas.push({
+    id: todoList.value.Tarefas.length,
+    title: response,
+    date: new Date().toDateString(),
+  });
+
+  todoList.value.Tarefas = todoList.value.Tarefas.filter(
+    ({ title }) => title !== "Não há Tarefas !"
+  );
+
+  console.log(todoList.value.Tarefas, response);
+};
+// watchEffect(() => {
+//   // if (message.value) {
+
+//   // // console.log(todoList.value.Tarefas, message.value);
+//   // // // }
+//   // todoList.value.Tarefas = newList.filter(
+//   //   ({ title }) => title !== "Não há Tarefas !"
+//   // );
+//   setTimeout(() => {
+//     todoList.value.Tarefas = [];
+//     console.log(todoList.value.Tarefas, "watchEffect");
+//   }, 1000);
+// });
 </script>
