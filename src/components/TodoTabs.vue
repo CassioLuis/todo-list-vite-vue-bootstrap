@@ -66,34 +66,11 @@ import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 let message = ref("");
 
 let todoList = ref({
-  Tarefas: [
-    // {
-    //   id: 1,
-    //   title: "Não há Tarefas !",
-    //   date: "",
-    // },
-    // {
-    //   id: 2,
-    //   title: "So you've bought coffee... now what?",
-    //   date: "2h ago",
-    // }
-  ],
-  Concluidas: [
-    {
-      id: 1,
-      title: "Is tech making coffee better or worse?",
-      date: "Jan 7",
-    },
-    {
-      id: 2,
-      title: "The most innovative things happening in coffee",
-      date: "Mar 19",
-    },
-  ],
+  Tarefas: [],
+  Concluidas: [],
 });
 
 onBeforeMount(() => {
-  // if (todoList.value.Tarefas) {
   todoList.value.Tarefas = [
     {
       id: 1,
@@ -101,16 +78,9 @@ onBeforeMount(() => {
       date: "",
     },
   ];
-  // }
   console.log(todoList.value.Tarefas, "onBeforeMount");
 });
 
-// onMounted(() => {
-//   setTimeout(() => {
-//     todoList.value.Tarefas = [];
-//     console.log(todoList.value.Tarefas, "onMounted");
-//   }, 1000);
-// });
 
 const addTask = (response) => {
   if (!response) {
@@ -128,17 +98,5 @@ const addTask = (response) => {
 
   console.log(todoList.value.Tarefas, response);
 };
-// watchEffect(() => {
-//   // if (message.value) {
 
-//   // // console.log(todoList.value.Tarefas, message.value);
-//   // // // }
-//   // todoList.value.Tarefas = newList.filter(
-//   //   ({ title }) => title !== "Não há Tarefas !"
-//   // );
-//   setTimeout(() => {
-//     todoList.value.Tarefas = [];
-//     console.log(todoList.value.Tarefas, "watchEffect");
-//   }, 1000);
-// });
 </script>
