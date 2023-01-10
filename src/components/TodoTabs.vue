@@ -59,11 +59,9 @@
 </template>
 
 <script setup>
-import { onBeforeMount, onMounted, ref, watchEffect } from "vue";
+import { onBeforeMount, ref } from "vue";
 import TodoForm from "./TodoForm.vue";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
-
-let message = ref("");
 
 let todoList = ref({
   Tarefas: [],
@@ -78,25 +76,43 @@ onBeforeMount(() => {
       date: "",
     },
   ];
-  console.log(todoList.value.Tarefas, "onBeforeMount");
+  todoList.value.Concluidas = [
+    {
+      id: 1,
+      title: "Não há Tarefas !",
+      date: "",
+    },
+  ];
 });
 
+const titleList = [];
 
-const addTask = (response) => {
-  if (!response) {
-    return
+const responseValidation = (param) => {
+  if (!param) {
+    alert('Tarefa em branco !')
+    return;
   }
-  todoList.value.Tarefas.push({
-    id: todoList.value.Tarefas.length,
-    title: response,
-    date: new Date().toDateString(),
-  });
+  if (titleList.includes(param)) {
+    alert("Tarefa já existe !");
+    return;
+  }
 
-  todoList.value.Tarefas = todoList.value.Tarefas.filter(
-    ({ title }) => title !== "Não há Tarefas !"
-  );
-
-  console.log(todoList.value.Tarefas, response);
+  return true;
 };
 
+const addTask = (response) => {
+  if (responseValidation(response)) {
+    titleList.push(response);
+
+    todoList.value.Tarefas.push({
+      id: todoList.value.Tarefas.length,
+      title: response,
+      date: new Date().toDateString(),
+    });
+
+    todoList.value.Tarefas = todoList.value.Tarefas.filter(
+      ({ title }) => title !== "Não há Tarefas !"
+    );
+  }
+};
 </script>
