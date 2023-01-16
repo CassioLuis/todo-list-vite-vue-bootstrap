@@ -59,24 +59,24 @@
 </template>
 
 <script setup>
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, reactive } from "vue";
 import TodoForm from "./TodoForm.vue";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
-let todoList = ref({
+let todoList = reactive({
   Tarefas: [],
   Concluidas: [],
 });
 
 onBeforeMount(() => {
-  todoList.value.Tarefas = [
+  todoList.Tarefas = [
     {
       id: 1,
       title: "Não há Tarefas !",
       date: "",
     },
   ];
-  todoList.value.Concluidas = [
+  todoList.Concluidas = [
     {
       id: 1,
       title: "Não há Tarefas !",
@@ -91,7 +91,7 @@ const inputValidation = (param) => {
     alert('Tarefa em branco !')
     return;
   }
-  if (todoList.value.Tarefas.some((item) => item.title === param)){
+  if (todoList.Tarefas.some((item) => item.title === param)){
     alert("Tarefa já existe !");
     return;
   } 
@@ -102,13 +102,13 @@ const inputValidation = (param) => {
 const addTask = (response) => {
   if (inputValidation(response)) {
     
-    todoList.value.Tarefas.push({
-      id: todoList.value.Tarefas.length,
+    todoList.Tarefas.push({
+      id: todoList.Tarefas.length,
       title: response,
       date: new Date().toDateString(),
     });
 
-    todoList.value.Tarefas = todoList.value.Tarefas.filter(
+    todoList.Tarefas = todoList.Tarefas.filter(
       ({ title }) => title !== "Não há Tarefas !"
     );
   }
