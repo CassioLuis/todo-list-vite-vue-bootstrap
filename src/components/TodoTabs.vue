@@ -85,25 +85,23 @@ onBeforeMount(() => {
   ];
 });
 
-const titleList = [];
 
-const responseValidation = (param) => {
+const inputValidation = (param) => {
   if (!param) {
     alert('Tarefa em branco !')
     return;
   }
-  if (titleList.includes(param)) {
+  if (todoList.value.Tarefas.some((item) => item.title === param)){
     alert("Tarefa já existe !");
     return;
-  }
+  } 
 
   return true;
 };
 
 const addTask = (response) => {
-  if (responseValidation(response)) {
-    titleList.push(response);
-
+  if (inputValidation(response)) {
+    
     todoList.value.Tarefas.push({
       id: todoList.value.Tarefas.length,
       title: response,
